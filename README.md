@@ -4,7 +4,8 @@
 - Clone this project using `https://github.com/prianka97/web-automation.git`
 - Import this project in the IntelliJ
 - Sync all gradle
-
+- Run command `./gradlew clean test --tests "WebScrapTests"` for web-scrap
+- Run command `./gradlew clean test --tests "FormSubmissionTest"` for form-submission
 ## Prerequisite
 - Install JDK 17
 - Install Gradle
