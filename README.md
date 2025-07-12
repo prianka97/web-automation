@@ -13,7 +13,9 @@
 - JAVA
 
 ## Form Submission
+![form-submission-report](images/formsubmission.png)
 
 
 ## Web Scrap 
+![web-scrap-report](images/webscrap.png)
 
