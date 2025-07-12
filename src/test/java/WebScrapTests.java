@@ -32,7 +32,6 @@ public class WebScrapTests {
         try {
             driver.get("https://dsebd.org/latest_share_price_scroll_by_value.php");
 
-            // Wait for tables to load
             wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector("table.shares-table"), 1));
 
             List<WebElement> tables = driver.findElements(By.cssSelector("table.shares-table"));
@@ -51,17 +50,18 @@ public class WebScrapTests {
 
             StringBuilder headerText = new StringBuilder();
             for (WebElement cell : headerCells) {
-                headerText.append(cell.getText().trim()).append("\t");
+                String cellText = cell.getText().trim();
+                headerText.append(cellText).append("\t");
             }
 
-            writer.write(headerText.toString().trim());
+            String headerLine = headerText.toString().trim();
+            writer.write(headerLine);
             writer.newLine();
-            System.out.println("Header: " + headerText);
+            System.out.println("Header: " + headerLine + "\n");
 
-            // Get data rows
-            wait.until(ExpectedConditions.visibilityOfNestedElementsLocatedBy(
-                    dataTable, By.cssSelector("tbody tr td")
-            ));
+            // get all row data
+            wait.until(ExpectedConditions.visibilityOfNestedElementsLocatedBy(dataTable, By.cssSelector("tbody tr td")));
+
             List<WebElement> rows = dataTable.findElements(By.cssSelector("tbody tr"));
             System.out.println("Rows found: " + rows.size());
 
@@ -69,22 +69,25 @@ public class WebScrapTests {
                 List<WebElement> cells = row.findElements(By.tagName("td"));
                 StringBuilder rowText = new StringBuilder();
                 for (WebElement cell : cells) {
-                    rowText.append(cell.getText().trim()).append("\t");
+                    String cellText = cell.getText().trim();
+                    rowText.append(cellText).append("\t");
                 }
-                writer.write(rowText.toString().trim());
+
+                String line = rowText.toString().trim();
+                writer.write(line);
                 writer.newLine();
-                System.out.println(rowText);
-                System.out.print(rowText + "\t"); // Print each cell to terminal
+                System.out.println("Row: " + line);
             }
 
             writer.close();
             System.out.println("✓ Data saved to dse_data.txt");
 
         } catch (Exception e) {
-            System.out.println("Table scraping failed: " + e.getMessage());
+            System.out.println("❌ Table scraping failed: " + e.getMessage());
             throw e;
         }
     }
+
 
     @AfterEach
     public void tearDown() {
